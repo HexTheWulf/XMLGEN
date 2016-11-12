@@ -25,8 +25,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class XMLGEN {
-    public static void main(String argv[]) {
-    String[][] StringArray = {{"department","prefix","course-number","credit-hours"},{"computerScience","CSCI","3333","3.000"}};
+    public static void main(String argv[]) throws IOException, Exception{
+    String[][] StringArray = {{"department","prefix","course-number","credit-hours",
+        "lecture-hours", "lab-hours", "level", "schedule-type", "Prerequisite"},
+        {"Computer Science","CSCI","3333","3.000","3.000","0.000","Undergraduate",
+        "Lecture", "CSCI 3333"}};
 
           try {
 
@@ -36,7 +39,7 @@ public class XMLGEN {
                 Element rootElement = doc.createElement("Course");
                 doc.appendChild(rootElement);
 
-                for (int j = 0; j <StringArray.length; j++)
+                for (int j = 0; j < StringArray.length; j++)
                 {
                     if(StringArray[0][j]=="Prerequisite")
                     {
@@ -46,16 +49,13 @@ public class XMLGEN {
                     }
                     else
                     {
-                        Element Department = doc.createElement(StringArray[0][j]);
-                        Department.appendChild(doc.createTextNode(StringArray[j][0]));
-                        rootElement.appendChild(Department);
+                        
+                        //Element Department = doc.createElement(StringArray[0][j]);
+                        //Department.appendChild(doc.createTextNode(StringArray[j][0]));
+                        rootElement.appendChild(getElement(StringArray[0][j],StringArray[j][0],doc));
                     }
                 }
-
-
-
-
-
+                
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -71,21 +71,19 @@ public class XMLGEN {
 
             System.out.println("File saved!");
 
-      } catch (ParserConfigurationException pce) {
+      } 
+          catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-      } catch (TransformerException tfe) {
+      } 
+          catch (TransformerException tfe) {
             tfe.printStackTrace();
       }
     }
         
 
-    private Element getElement(String elementName, String Text)throws Exception
+    private static Element getElement(String elementName, String Text, Document doc)throws Exception
     {
-        
-
-              DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-              DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-              Document doc = docBuilder.newDocument();
+              
               Element e = doc.createElement(elementName);
               e.appendChild(doc.createTextNode(Text));
               
