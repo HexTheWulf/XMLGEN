@@ -14,6 +14,7 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -25,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class XMLGEN {
     public static void main(String argv[]) {
-    String[][] StringArray = {{"department","prefix","course-number"},{"computerScience","CSCI","3333"}};
+    String[][] StringArray = {{"department","prefix","course-number","credit-hours"},{"computerScience","CSCI","3333","3.000"}};
 
           try {
 
@@ -58,8 +59,10 @@ public class XMLGEN {
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("C:\\Users\\Gonzalo\\Documents\\NetBeansProjects\\XMLGEN\\File.XML"));
+            StreamResult result = new StreamResult(new File("C:\\file.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
